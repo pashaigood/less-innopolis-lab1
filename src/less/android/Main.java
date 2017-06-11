@@ -1,6 +1,7 @@
 package less.android;
 
-import less.android.factories.UniwordDetector;
+import less.android.factories.Uniword;
+import less.android.factories.WordCounter;
 
 public class Main {
 
@@ -9,6 +10,7 @@ public class Main {
         tryIncorrectCollection();
         tryIncorrectSymbols();
         tryWithUnexistingFile();
+        tryCountWords();
     }
 
     private static void tryWithUnexistingFile() {
@@ -43,8 +45,17 @@ public class Main {
     }
 
     private static void createUniword(String[] files, String name) {
-        UniwordDetector uniwordDetector = new UniwordDetector(files);
+        Uniword uniwordDetector = new Uniword(files);
         uniwordDetector.setName(name);
         uniwordDetector.start();
+    }
+
+    private static void tryCountWords() {
+        WordCounter wordCounter = new WordCounter(new String[] {
+                "./resources/notunique/one.txt",
+                "./resources/notunique/three.txt"
+        });
+        wordCounter.setName("Word counter");
+        wordCounter.start();
     }
 }

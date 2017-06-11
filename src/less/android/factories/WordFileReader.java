@@ -23,6 +23,7 @@ public class WordFileReader extends Thread {
             lineReader: while ((line = file.readLine()) != null) {
                 for (String word : WordChecker.getWordsFromString(line)) {
                     try {
+                        // simulate long working.
                         Thread.sleep(25);
                         fileWordOperator.addWord(word);
                     } catch (InterruptedException e) {

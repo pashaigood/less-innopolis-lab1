@@ -19,27 +19,22 @@ public class WordFileReader extends Thread {
     public void run() {
         try(BufferedReader file = new BufferedReader(new FileReader(fileName))) {
             String line;
-            while ((line = file.readLine()) != null) {
-                try {
-                    for (String word : WordChecker.getWordsFromString(line)) {
-                        if (Thread.interrupted()) {
-                            return;
-                        }
+            fileReader: while ((line = file.readLine()) != null) {
+                for (String word : WordChecker.getWordsFromString(line)) {
+                    try {
                         Thread.sleep(25);
                         detector.addWord(word);
+                    } catch (InterruptedException e) {
+                        System.out.println(fileName + " is not required anymore.");
+                        return;
                     }
-                } catch (InterruptedException e) {
-                    System.out.println("Word file reader " + fileName + ": is not required anymore.");
-                    return;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    interrupt();
-                    return;
                 }
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
+            System.err.printf("Some problem occurred while reading %s.\n", fileName);
         }
+
+        System.out.printf("%s is readed.\n", fileName);
     }
 }

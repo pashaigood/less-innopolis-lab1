@@ -1,30 +1,41 @@
 package less.android;
 
 import less.android.factories.UniwordDetector;
-import less.android.factories.WordFileReader;
 
 public class Main {
 
     public static void main(String[] args) {
-//        tryCorrectCollection();
+        tryIncorrectSymbols();
+        tryCorrectCollection();
         tryIncorrectCollection();
     }
 
+    private static void tryIncorrectSymbols() {
+        createUniword(new String[] {
+                "./resources/incorrect/symbols.txt",
+                "./resources/incorrect/symbols_2.txt"
+        }, "Incorrect symbol");
+    }
+
     private static void tryCorrectCollection() {
-        UniwordDetector correctUniwordDetector = new UniwordDetector(new String[] {
+        createUniword(new String[] {
                 "./resources/correct/one.txt",
                 "./resources/correct/two.txt",
                 "./resources/correct/three.txt"
-        }, WordFileReader.class);
-        correctUniwordDetector.start();
+        }, "Correct uniword");
     }
 
     private static void tryIncorrectCollection() {
-        UniwordDetector incorrectUniwordDetector = new UniwordDetector(new String[] {
+        createUniword(new String[] {
                 "./resources/incorrect/one.txt",
                 "./resources/incorrect/two.txt",
                 "./resources/incorrect/three.txt"
-        }, WordFileReader.class);
-        incorrectUniwordDetector.start();
+        }, "Incorrect uniword");
+    }
+
+    private static void createUniword(String[] files, String name) {
+        UniwordDetector uniwordDetector = new UniwordDetector(files);
+        uniwordDetector.setName(name);
+        uniwordDetector.start();
     }
 }

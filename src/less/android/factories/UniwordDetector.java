@@ -1,6 +1,7 @@
 package less.android.factories;
 
 import less.android.interfaces.Detector;
+import less.android.utils.WordChecker;
 
 import java.util.concurrent.*;
 
@@ -9,7 +10,7 @@ public class UniwordDetector extends Thread implements Detector {
     private ConcurrentHashMap<String, Boolean> words = new ConcurrentHashMap<>();
     private final ExecutorService poolExecutor;
 
-    public UniwordDetector(String[] files, Class reader) {
+    public UniwordDetector(String[] files) {
         poolExecutor = Executors.newWorkStealingPool(10);
         this.files = files;
     }
@@ -21,6 +22,12 @@ public class UniwordDetector extends Thread implements Detector {
                 Thread.currentThread().getName(),
                 word
         );*/
+
+        if (! WordChecker.check(word)) {
+            poolExecutor.shutdownNow();
+            System.out.printf("Word %s is not allowed.\n", word);
+        }
+
         if (! words.containsKey(word)) {
             words.put(word, true);
         }
@@ -44,11 +51,11 @@ public class UniwordDetector extends Thread implements Detector {
                 try {
                     poolExecutor.wait();
                 } catch (InterruptedException e) {
-                    System.out.println("Uniword was finish its work.");
+                    break;
                 }
             }
         }
 
-        System.out.println(Thread.currentThread().getName() + " is finished. With " + words.size() + " words");
+        System.out.println(Thread.currentThread().getName() + " is finished. With " + words.size() + " words\n\n");
     }
 }

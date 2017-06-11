@@ -21,13 +21,20 @@ public class WordFileReader extends Thread {
             String line;
             while ((line = file.readLine()) != null) {
                 try {
-                    for (String word: WordChecker.getWordsFromString(line)) {
+                    for (String word : WordChecker.getWordsFromString(line)) {
+                        if (Thread.interrupted()) {
+                            return;
+                        }
                         Thread.sleep(25);
                         detector.addWord(word);
                     }
+                } catch (InterruptedException e) {
+                    System.out.println("Word file reader " + fileName + ": is not required anymore.");
+                    return;
                 } catch (Exception e) {
-
                     e.printStackTrace();
+                    interrupt();
+                    return;
                 }
             }
         }

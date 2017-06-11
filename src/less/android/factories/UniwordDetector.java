@@ -16,11 +16,11 @@ public class UniwordDetector extends Thread implements Detector {
 
     @Override
     synchronized public void addWord(String word) {
-        System.out.printf(
+        /*System.out.printf(
                 "%s try to add a word: %s\n",
                 Thread.currentThread().getName(),
                 word
-        );
+        );*/
         if (! words.containsKey(word)) {
             words.put(word, true);
         }
@@ -44,7 +44,7 @@ public class UniwordDetector extends Thread implements Detector {
                 try {
                     poolExecutor.wait();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    System.out.println("Uniword was finish its work.");
                 }
             }
         }

@@ -5,9 +5,18 @@ import less.android.factories.UniwordDetector;
 public class Main {
 
     public static void main(String[] args) {
-        tryIncorrectSymbols();
         tryCorrectCollection();
         tryIncorrectCollection();
+        tryIncorrectSymbols();
+        tryWithUnexistingFile();
+    }
+
+    private static void tryWithUnexistingFile() {
+        createUniword(new String[] {
+                "./resources/notexists/1.txt",
+                "./resources/unique/two.txt",
+                "./resources/notexists/2.txt"
+        }, "With not existing files");
     }
 
     private static void tryIncorrectSymbols() {
@@ -19,17 +28,17 @@ public class Main {
 
     private static void tryCorrectCollection() {
         createUniword(new String[] {
-                "./resources/correct/one.txt",
-                "./resources/correct/two.txt",
-                "./resources/correct/three.txt"
+                "./resources/unique/one.txt",
+                "./resources/unique/two.txt",
+                "./resources/unique/three.txt"
         }, "Correct uniword");
     }
 
     private static void tryIncorrectCollection() {
         createUniword(new String[] {
-                "./resources/incorrect/one.txt",
-                "./resources/incorrect/two.txt",
-                "./resources/incorrect/three.txt"
+                "./resources/notunique/one.txt",
+                "./resources/notunique/two.txt",
+                "./resources/notunique/three.txt"
         }, "Incorrect uniword");
     }
 
